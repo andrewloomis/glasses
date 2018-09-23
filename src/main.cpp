@@ -6,7 +6,7 @@
 #include <atomic>       // std::atomic
 #include <signal.h>     // signal()
 
-std::atomic<bool> run = true;
+bool run = true;
 
 void signal_callback(int signal)
 {
@@ -34,6 +34,8 @@ int main(int argc, char** argv)
     {
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(500ms);
-        gc.printData();
+        
     }
+    std::cout << "Latest Gesture: " << (int)gc.getLatestGesture().dir
+    << " at " << gc.getLatestGesture().timestamp << std::endl;
 }

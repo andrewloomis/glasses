@@ -1,26 +1,38 @@
 #ifndef GESTURE_H
 #define GESTURE_H
 
+#include <usertypes.h>
 #include <mraa.hpp>
-#include <functional>
+#include <array>
+#include <vector>
+
 class GestureController
 {
 public:
     GestureController();
     ~GestureController();
-    void printData();
+    Gesture getLatestGesture() const { return gestureBuffer.getLatest(); }
 
 private:
     mraa::I2c i2c;
     mraa::Gpio interrupt;
+    GestureBuffer gestureBuffer;
+    Direction lastDetect = Direction::NONE;
 
-    struct GestureData
+    struct PreviousDetects
     {
-        int upData = 0;
-        int downData = 0;
-        int rightData = 0;
-        int leftData = 0;
-    } gestureData;
+        int up = 0;
+        int down = 0;
+        int right = 0;
+        int left = 0;
+        void reset()
+        {
+            up = 0;
+            down = 0;
+            right = 0;
+            left = 0;
+        }
+    } detects;
 
     enum class PowerMode
     {
@@ -29,11 +41,14 @@ private:
     };
 
     void enableGestures();
-    // std::function<void(void*)> intCallback;
     static void intCallback(void*);
     void readGestureData();
-    void parseFifoData(std::array<uint8_t, 128>& data, uint8_t dataCount);
+    void parseFifoData(const std::array<uint8_t, 128>& data, uint8_t dataCount);
     void powerMode(PowerMode mode);
+
+    void setupGestureRegisters();
+    void setupADC();
+    void sleep(int ms);
 };
 
 #endif
