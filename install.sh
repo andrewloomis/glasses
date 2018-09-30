@@ -3,7 +3,7 @@ sudo apt-mark hold linux-image-4.14.0-qcomlt-arm64
 sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo apt-get dist-upgrade -y
-sudo apt-get install -y cmake xorg
+sudo apt-get install -y cmake xorg tightvncserver
 
 # Install MRAA library
 git clone https://github.com/intel-iot-devkit/mraa.git
