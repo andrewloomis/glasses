@@ -53,13 +53,14 @@ GestureController::GestureController()
 
 GestureController::~GestureController()
 {
+    std::cout << "Sleeping Gesture Sensor\n";
     powerMode(PowerMode::OFF);
 }
 
 void GestureController::powerMode(PowerMode mode)
 {
     // Set GEN, PEN and PON to 1
-    i2c.writeReg(EN, 0b01000100 + static_cast<int>(mode));
+    i2c.writeReg(EN, 0b01000100 + static_cast<uint8_t>(mode));
 }
 
 void GestureController::enableGestures()
@@ -71,7 +72,7 @@ void GestureController::enableGestures()
 
 void GestureController::setupADC()
 {
-    uint8_t time = 256 - (10 / 2.78);
+//    float time = 256 - (10 / 2.78);
     i2c.writeReg(ATIME, 219);
 
     i2c.writeReg(CTRL1, 0b0000'10'01);
@@ -131,8 +132,8 @@ void GestureController::sleep(int milliseconds)
 
 void GestureController::parseFifoData(const std::array<uint8_t, 128>& data, uint8_t dataCount)
 {
-    int upDownDiff = (int)data[0] - (int)data[1];
-    int leftRightDiff = (int)data[2] - (int)data[3];
+    int upDownDiff = data[0] - data[1];
+    int leftRightDiff = data[2] - data[3];
     // std::cout << "Up: " << upDownDiff << std::endl;
     // std::cout << "Left: " << leftRightDiff << "\n-------------" << std::endl;
     // for (int i = 0; i < dataCount; i++) std::cout << (int)data[i] << ',';
@@ -162,6 +163,7 @@ void GestureController::parseFifoData(const std::array<uint8_t, 128>& data, uint
     {
         if (detects.right > 0) {
             gestureBuffer.add(Direction::LEFT);
+            swipeManager.moveToLeft();
             std::cout << "LEFT****************\n";
             detects.reset();
             sleep(200);
@@ -172,6 +174,7 @@ void GestureController::parseFifoData(const std::array<uint8_t, 128>& data, uint
     {
         if (detects.left > 0) {
             gestureBuffer.add(Direction::RIGHT);
+            swipeManager.moveToRight();
             std::cout << "RIGHT****************\n";
             detects.reset();
             sleep(200);

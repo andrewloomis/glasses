@@ -3,20 +3,32 @@
 
 #include <gesturecontroller.h>
 #include <button.h>
+#include <swipemanager.h>
+#include <bluetoothcontroller.h>
+
 #include <atomic>
 #include <memory>
+#include <QPointer>
+#include <QGuiApplication>
+#include <thread>
 
 class Glasses
 {
 public:
-    Glasses();
-    void testGestures();
+    Glasses(QGuiApplication& app);
+    ~Glasses();
+    QPointer<SwipeManager> getSwipeManager() { return gc.getSwipeManager(); }
+//    void testGestures();
 private:
     GestureController gc;
+    BluetoothController bc;
+    QGuiApplication& guiApp;
     Button wakeUp;
+    std::thread timerThread;
     
-    static std::shared_ptr<std::atomic<bool>> shutdownFlag;
+    static inline std::shared_ptr<std::atomic<bool>> shutdownFlag;
     static void signal_callback(int signal);
+    void timer();
 };
 
 #endif

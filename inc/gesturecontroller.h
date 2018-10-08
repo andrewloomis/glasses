@@ -1,19 +1,24 @@
-#ifndef GESTURE_H
-#define GESTURE_H
+#ifndef GESTURECONTROLLER_H
+#define GESTURECONTROLLER_H
 
 #include <usertypes.h>
 #include <mraa.hpp>
 #include <array>
 #include <vector>
+#include <memory>
+#include <swipemanager.h>
+#include <QPointer>
 
 class GestureController
 {
 public:
     GestureController();
     ~GestureController();
+    QPointer<SwipeManager> getSwipeManager() { return &swipeManager; }
     Gesture getLatestGesture() const { return gestureBuffer.getLatest(); }
 
 private:
+    SwipeManager swipeManager;
     mraa::I2c i2c;
     mraa::Gpio interrupt;
     GestureBuffer gestureBuffer;

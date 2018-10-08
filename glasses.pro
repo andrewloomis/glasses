@@ -1,4 +1,4 @@
-QT += quick
+QT += quick bluetooth
 CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
@@ -17,17 +17,23 @@ SOURCES += \
     src/button.cpp  \
     src/gesturecontroller.cpp  \
     src/glasses.cpp  \
+    src/swipemanager.cpp \
+    src/bluetoothcontroller.cpp \
+    src/bluetoothservice.cpp
 
 HEADERS += \
     inc/button.h  \
     inc/gesturecontroller.h  \
-    inc/glasses.h
+    inc/glasses.h \
+    inc/swipemanager.h \
+    inc/bluetoothcontroller.h \
+    inc/bluetoothservice.h
 
 RESOURCES += qml.qrc
 
 INCLUDEPATH += inc/
 
-
+#QMAKE_CXXFLAGS_DEBUG *= -O0 -fno-inline-functions
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -36,9 +42,11 @@ QML_IMPORT_PATH =
 QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+#qnx: target.path = /tmp/$${TARGET}/bin
+#else: unix:!android: target.path = /opt/$${TARGET}/bin
+#!isEmpty(target.path): INSTALLS += target
+target.path = /home/linaro/glasses-build
+INSTALLS += target
 
 unix:!macx: LIBS += -L$$PWD/../../../media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu/ -lmraa
 
