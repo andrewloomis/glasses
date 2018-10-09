@@ -19,8 +19,7 @@ SOURCES += \
     src/glasses.cpp  \
     src/swipemanager.cpp \
     src/bluetoothcontroller.cpp \
-    src/bluetoothservice.cpp \
-    timemanager.cpp
+    src/timemanager.cpp
 
 HEADERS += \
     inc/button.h  \
@@ -28,8 +27,7 @@ HEADERS += \
     inc/glasses.h \
     inc/swipemanager.h \
     inc/bluetoothcontroller.h \
-    inc/bluetoothservice.h \
-    timemanager.h
+    inc/timemanager.h
 
 RESOURCES += qml.qrc
 
@@ -54,6 +52,3 @@ unix:!macx: LIBS += -L$$PWD/../../../media/hdd/linaro/sysroot/usr/lib/aarch64-li
 
 INCLUDEPATH += $$PWD/../../../media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
 DEPENDPATH += $$PWD/../../../media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
-
-DISTFILES += \
-    saturn.jpg

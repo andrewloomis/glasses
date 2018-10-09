@@ -14,11 +14,12 @@ class GestureController
 public:
     GestureController();
     ~GestureController();
-    QPointer<SwipeManager> getSwipeManager() { return &swipeManager; }
+    std::shared_ptr<SwipeManager> getSwipeManager()
+        { return swipeManager; }
     Gesture getLatestGesture() const { return gestureBuffer.getLatest(); }
 
 private:
-    SwipeManager swipeManager;
+    std::shared_ptr<SwipeManager> swipeManager;
     mraa::I2c i2c;
     mraa::Gpio interrupt;
     GestureBuffer gestureBuffer;

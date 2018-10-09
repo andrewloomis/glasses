@@ -5,6 +5,7 @@
 #include <button.h>
 #include <swipemanager.h>
 #include <bluetoothcontroller.h>
+#include <timemanager.h>
 
 #include <atomic>
 #include <memory>
@@ -17,11 +18,13 @@ class Glasses
 public:
     Glasses(QGuiApplication& app);
     ~Glasses();
-    QPointer<SwipeManager> getSwipeManager() { return gc.getSwipeManager(); }
+    std::shared_ptr<SwipeManager> getSwipeManager() { return gc.getSwipeManager(); }
+    std::shared_ptr<TimeManager> getTimeManager() { return tm; }
 //    void testGestures();
 private:
     GestureController gc;
     BluetoothController bc;
+    std::shared_ptr<TimeManager> tm;
     QGuiApplication& guiApp;
     Button wakeUp;
     std::thread timerThread;

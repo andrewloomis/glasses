@@ -163,7 +163,7 @@ void GestureController::parseFifoData(const std::array<uint8_t, 128>& data, uint
     {
         if (detects.right > 0) {
             gestureBuffer.add(Direction::LEFT);
-            swipeManager.moveToLeft();
+            swipeManager->moveToLeft();
             std::cout << "LEFT****************\n";
             detects.reset();
             sleep(200);
@@ -174,7 +174,7 @@ void GestureController::parseFifoData(const std::array<uint8_t, 128>& data, uint
     {
         if (detects.left > 0) {
             gestureBuffer.add(Direction::RIGHT);
-            swipeManager.moveToRight();
+            swipeManager->moveToRight();
             std::cout << "RIGHT****************\n";
             detects.reset();
             sleep(200);

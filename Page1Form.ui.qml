@@ -17,8 +17,14 @@ Page {
         y: 80
         width: 328
         height: 161
-        text: qsTr("Time")
+        text: "NaN"
         font.pointSize: 100
         color: "#ffffff"
+    }
+    Connections {
+        target: timeManager
+        onUpdateUiTime: {
+            timeLabel.text = timeManager.dayOfWeek
+        }
     }
 }

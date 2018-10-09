@@ -4,6 +4,7 @@
 #include <iostream>     // cout
 #include <chrono>       // chrono_literals
 #include <signal.h>     // signal()
+#include <QObject>
 
 void Glasses::signal_callback(int signal)
 {
@@ -11,7 +12,7 @@ void Glasses::signal_callback(int signal)
 }
 
 Glasses::Glasses(QGuiApplication& app)
-    : guiApp(app), wakeUp(31)
+    : tm(std::make_shared<TimeManager>()), guiApp(app), wakeUp(31)
 {
     signal(SIGINT, signal_callback);
     shutdownFlag = std::make_shared<std::atomic<bool>>(false);
@@ -29,6 +30,8 @@ Glasses::Glasses(QGuiApplication& app)
         << " on " << mraa::getPlatformName() << std::endl;
     }
     timerThread = std::thread([this]{ timer(); });
+
+    QObject::connect(&bc, &BluetoothController::newTime, tm.get(), &TimeManager::updateTime);
 }
 
 Glasses::~Glasses()
@@ -43,9 +46,7 @@ void Glasses::timer()
     while(!(*shutdownFlag))
     {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(2000ms);
-        if (level == 0) level = 100;
-        bc.updateBatteryLevel(level--);
+        std::this_thread::sleep_for(200ms);
 //        auto now = std::chrono::system_clock::now();
 //        std::chrono::duration<double> diff = now - start;
 //        if (diff.count() > 12.0)
