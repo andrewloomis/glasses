@@ -3,6 +3,7 @@
 
 #include <QtBluetooth>
 #include <bluetoothservice.h>
+#include <memory>
 
 class BluetoothController
 {
@@ -11,7 +12,7 @@ public:
     void updateBatteryLevel(uint8_t level);
 
 private:
-    const QSharedPointer<QLowEnergyController> leController;
+    std::shared_ptr<QLowEnergyController> leController;
     BluetoothService batteryService;
     QLowEnergyAdvertisingData advertisingData;
 

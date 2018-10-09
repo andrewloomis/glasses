@@ -2,6 +2,7 @@
 #define BLUETOOTHSERVICE_H
 
 #include <QtBluetooth>
+#include <memory>
 
 class BluetoothService
 {
@@ -11,6 +12,7 @@ public:
     {
         QBluetoothUuid serviceUuid;
         QBluetoothUuid characteristicUuid;
+        QLowEnergyCharacteristic::PropertyTypes properties;
         int valueSize = 0;
 
         template<typename T>
@@ -20,13 +22,13 @@ public:
         }
     };
 
-    BluetoothService(QSharedPointer<QLowEnergyController> controller);
+    BluetoothService(std::shared_ptr<QLowEnergyController> controller);
     void defaultSetup(ServiceType& serviceType);
     void update(QByteArray value);
 
 private:
-    QSharedPointer<QLowEnergyController> mController;
-    QPointer<QLowEnergyService> service;
+    std::shared_ptr<QLowEnergyController> mController;
+    std::unique_ptr<QLowEnergyService> service;
     QLowEnergyServiceData serviceData;
     QLowEnergyCharacteristicData charData;
     QLowEnergyDescriptorData clientConfig;

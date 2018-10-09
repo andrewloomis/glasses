@@ -4,21 +4,21 @@ import QtQuick.Controls 2.2
 Page {
     width: 480
     height: 320
-
-    header: Label {
-        text: qsTr("Page 1")
-        font.pixelSize: 44
-        padding: 10
+    Image {
+        id: image
+        width: parent.width
+        height: parent.height
+        fillMode: Image.PreserveAspectCrop
+        source: "saturn.jpg"
     }
-
     Label {
-        width: 464
-        height: 173
-        text: qsTr("You are on Page 1.")
-        anchors.verticalCenterOffset: 0
-        anchors.horizontalCenterOffset: 17
-        font.pointSize: 36
-        fontSizeMode: Text.HorizontalFit
-        anchors.centerIn: parent
+        id: timeLabel
+        x: 76
+        y: 80
+        width: 328
+        height: 161
+        text: qsTr("Time")
+        font.pointSize: 100
+        color: "#ffffff"
     }
 }

@@ -26,8 +26,10 @@ void BluetoothController::setupAdvertising()
 void BluetoothController::setupBatteryLevelService()
 {
     BluetoothService::ServiceType service;
-    service.serviceUuid = QBluetoothUuid(QBluetoothUuid::BatteryService);
-    service.characteristicUuid = QBluetoothUuid(QBluetoothUuid::BatteryLevel);
+    service.serviceUuid = QBluetoothUuid::BatteryService;
+    service.characteristicUuid = QBluetoothUuid::BatteryLevel;
+    using leChar = QLowEnergyCharacteristic;
+    service.properties = leChar::Notify | leChar::Read;
     service.setValueSize<uint8_t>();
     batteryService.defaultSetup(service);
 }

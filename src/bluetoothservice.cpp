@@ -1,6 +1,6 @@
 #include "bluetoothservice.h"
 
-BluetoothService::BluetoothService(QSharedPointer<QLowEnergyController> controller)
+BluetoothService::BluetoothService(std::shared_ptr<QLowEnergyController> controller)
     : mController(controller)
 {
 
@@ -10,7 +10,7 @@ void BluetoothService::defaultSetup(ServiceType& serviceType)
 {
     charData.setUuid(serviceType.characteristicUuid);
     charData.setValue(QByteArray(serviceType.valueSize, 0));
-    charData.setProperties(QLowEnergyCharacteristic::Notify);
+    charData.setProperties(serviceType.properties);
     // Characteristic descriptor
     clientConfig = QLowEnergyDescriptorData(QBluetoothUuid::ClientCharacteristicConfiguration,
                                                 QByteArray(2, 0));
@@ -20,7 +20,7 @@ void BluetoothService::defaultSetup(ServiceType& serviceType)
     serviceData.setType(QLowEnergyServiceData::ServiceTypePrimary);
     serviceData.setUuid(serviceType.serviceUuid);
     serviceData.addCharacteristic(charData);
-    service = mController->addService(serviceData);
+    service.reset(mController->addService(serviceData));
 }
 
 void BluetoothService::update(QByteArray value)
