@@ -5,17 +5,54 @@ Page {
     width: 480
     height: 320
 
-    header: Label {
-        text: qsTr("Page 2")
-        font.pixelSize: 45
-        padding: 10
+    Rectangle {
+        id: rectangle
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        width: parent.width * .9
+        height: parent.height * .8
+        color: "#c4c4c4"
+        Text {
+            id: body
+            text: qsTr("name")
+            fontSizeMode: Text.Fit
+            anchors.top: parent.top
+            anchors.topMargin: 40
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+        }
     }
 
-    Label {
-        text: qsTr("You are on Page 2.")
-        anchors.verticalCenterOffset: -42
-        anchors.horizontalCenterOffset: 1
-        font.pointSize: 41
-        anchors.centerIn: parent
+    Rectangle {
+        id: rectangle1
+        x: 0
+        y: 0
+        width: parent.width * .8
+        height: parent.height * .2
+        color: "#2958ff"
+
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+
+        Text {
+            id: name
+            text: qsTr("name")
+            color: "#ffffff"
+            fontSizeMode: Text.Fit
+            anchors.top: parent.top
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 10
+        }
     }
 }

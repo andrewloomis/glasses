@@ -19,7 +19,8 @@ SOURCES += \
     src/glasses.cpp  \
     src/swipemanager.cpp \
     src/bluetoothcontroller.cpp \
-    src/timemanager.cpp
+    src/timemanager.cpp \
+    src/smsmanager.cpp
 
 HEADERS += \
     inc/button.h  \
@@ -27,7 +28,8 @@ HEADERS += \
     inc/glasses.h \
     inc/swipemanager.h \
     inc/bluetoothcontroller.h \
-    inc/timemanager.h
+    inc/timemanager.h \
+    inc/smsmanager.h
 
 RESOURCES += qml.qrc
 

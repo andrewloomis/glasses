@@ -7,8 +7,16 @@ TimeManager::TimeManager(QObject *parent)
 
 }
 
-QString TimeManager::getDayOfWeek() const
+QString TimeManager::getDateString() const
 {
-    std::cout << "dow: " << (std::size_t)mTime.date().dayOfWeek() << '\n';
-    return daysOfWeek[(std::size_t)mTime.date().dayOfWeek() - 1];
+    return daysOfWeek[(std::size_t)mTime.date().dayOfWeek() - 1]
+            + ", " + months[(std::size_t)mTime.date().month() - 1]
+            + ' ' + QString::number(mTime.date().day());
+}
+
+QString TimeManager::getTimeString() const
+{
+    int mins = mTime.time().minute();
+    return QString::number(mTime.time().hour() % 12)
+            + ((mins > 9) ? ":" : ":0") + QString::number(mins);
 }

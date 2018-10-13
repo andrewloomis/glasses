@@ -1,10 +1,12 @@
 #include "bluetoothcontroller.h"
+#include <smsmanager.h>
 #include <QDebug>
+#include <QtGlobal>
 
 BluetoothController::BluetoothController()
     : deviceDiscoveryAgent(new QBluetoothDeviceDiscoveryAgent())
 {
-    deviceDiscoveryAgent->setLowEnergyDiscoveryTimeout(5000);
+    deviceDiscoveryAgent->setLowEnergyDiscoveryTimeout(3000);
     connect(deviceDiscoveryAgent.get(), &QBluetoothDeviceDiscoveryAgent::deviceDiscovered,
             this, &BluetoothController::foundDevice);
     connect(deviceDiscoveryAgent.get(), &QBluetoothDeviceDiscoveryAgent::finished, this,
@@ -16,10 +18,23 @@ BluetoothController::BluetoothController()
 
 void BluetoothController::foundDevice(const QBluetoothDeviceInfo &device)
 {
-    if(device.name() == "Glasses")
+    bool timeServiceDiscovered = false;
+    bool messageServiceDiscovered = false;
+    for (auto& uuid : device.serviceUuids())
     {
-        qWarning() << "Found device\n";
+        if (uuid == QBluetoothUuid::CurrentTimeService)
+        {
+            timeServiceDiscovered = true;
+        }
+        else if (uuid == QBluetoothUuid(SmsManager::getServiceUuid()))
+        {
+            messageServiceDiscovered = true;
+        }
+    }
+    if (messageServiceDiscovered)
+    {
         deviceInfo = device;
+        qWarning() << "Found device\n";
     }
 }
 
@@ -48,6 +63,15 @@ void BluetoothController::scanFinished()
     }
 }
 
+void BluetoothController::deviceConnected()
+{
+    connect(controller.get(), &QLowEnergyController::serviceDiscovered, this,
+            &BluetoothController::serviceDiscovered);
+    connect(controller.get(), &QLowEnergyController::discoveryFinished, this,
+            &BluetoothController::serviceScanDone);
+    controller->discoverServices();
+}
+
 void BluetoothController::serviceScanDone()
 {
     if (std::find(serviceUuids.begin(), serviceUuids.end(),
@@ -55,25 +79,33 @@ void BluetoothController::serviceScanDone()
     {
         qWarning() << "No current time service discovered!\n";
     }
+    else if (std::find(serviceUuids.begin(), serviceUuids.end(),
+                       QBluetoothUuid(SmsManager::getServiceUuid())) == serviceUuids.end())
+    {
+        qWarning() << "No message service discovered!\n";
+    }
     else
     {
-        qWarning() << "Current time service discovered!\n";
-        timeService.reset(controller->createServiceObject(QBluetoothUuid::CurrentTimeService, this));
-        if(timeService)
-        {
-            connect(timeService.get(), &QLowEnergyService::stateChanged, this,
-                    &BluetoothController::serviceDetailScanStatus);
-            connect(timeService.get(), &QLowEnergyService::characteristicRead, this,
-                    &BluetoothController::characteristicRead);
-            timeService->discoverDetails();
-        }
+        qWarning() << "Current time and message service discovered!\n";
 
+        messageService.reset(controller->createServiceObject(QBluetoothUuid(SmsManager::getServiceUuid()), this));
+        if(messageService)
+        {
+            connect(messageService.get(), &QLowEnergyService::stateChanged, this,
+                    &BluetoothController::messageServiceDetailScanStatus);
+            connect(messageService.get(), &QLowEnergyService::characteristicChanged, this,
+                    &BluetoothController::messageCharacteristicChanged);
+            connect(messageService.get(), &QLowEnergyService::characteristicRead, this,
+                    &BluetoothController::messageCharacteristicRead);
+            messageService->discoverDetails();
+        }
     }
 }
 
-void BluetoothController::characteristicRead(const QLowEnergyCharacteristic& info,
+void BluetoothController::timeCharacteristicRead(const QLowEnergyCharacteristic& info,
                                              const QByteArray& value)
 {
+    qWarning() << "Reading time characteristic\n";
     if (info.uuid() == QBluetoothUuid::CurrentTime && value.length() == 10)
     {
         QDate date(value[1] << 8 | value[0], value[2], value[3]);
@@ -85,24 +117,61 @@ void BluetoothController::characteristicRead(const QLowEnergyCharacteristic& inf
     }
 }
 
-
-void BluetoothController::serviceDetailScanStatus(QLowEnergyService::ServiceState newState)
+void BluetoothController::timeServiceDetailScanStatus(QLowEnergyService::ServiceState newState)
 {
     if(newState == QLowEnergyService::ServiceDiscovered)
     {
+        qWarning() << "Time Service detail scan\n";
         auto characteristic = timeService->characteristic(QBluetoothUuid::CurrentTime);
-        if(!characteristic.isValid()) qWarning() << "characteristic not valid!\n";
+        if(!characteristic.isValid()) qWarning() << "time characteristic not valid!\n";
         timeService->readCharacteristic(characteristic);
     }
 }
 
-void BluetoothController::deviceConnected()
+void BluetoothController::messageCharacteristicChanged(const QLowEnergyCharacteristic &characteristic,
+                                                       const QByteArray &newValue)
 {
-    connect(controller.get(), &QLowEnergyController::serviceDiscovered, this,
-            &BluetoothController::serviceDiscovered);
-    connect(controller.get(), &QLowEnergyController::discoveryFinished, this,
-            &BluetoothController::serviceScanDone);
-    controller->discoverServices();
+    qWarning() << "NEW MESSAGE: ";
+    if(characteristic.uuid() == QBluetoothUuid(SmsManager::getMessageUuid()))
+    {
+        QString text = QString(newValue);
+        qWarning() << text << '\n';
+    }
+}
+
+void BluetoothController::messageCharacteristicRead(const QLowEnergyCharacteristic& info,
+                                             const QByteArray& value)
+{
+    qWarning() << "Reading message characteristic\n";
+    if (info.uuid() == QBluetoothUuid(SmsManager::getMessageUuid()))
+    {
+        qWarning() << "data: " << QString(value);
+    }
+}
+
+void BluetoothController::messageServiceDetailScanStatus(QLowEnergyService::ServiceState newState)
+{
+    if(newState == QLowEnergyService::ServiceDiscovered)
+    {
+        qWarning() << "Message Service detail scan\n";
+        auto characteristic = messageService->characteristic(QBluetoothUuid(SmsManager::getMessageUuid()));
+        auto descriptor = characteristic.descriptor(QBluetoothUuid::ClientCharacteristicConfiguration);
+        if(!descriptor.isValid()) qWarning() << "message descriptor not valid!\n";
+        messageService->writeDescriptor(descriptor, QByteArray::fromHex("0100"));
+        if(!characteristic.isValid()) qWarning() << "message characteristic not valid!\n";
+
+        timeService.reset(controller->createServiceObject(QBluetoothUuid::CurrentTimeService, this));
+        if(timeService)
+        {
+            connect(timeService.get(), &QLowEnergyService::stateChanged, this,
+                    &BluetoothController::timeServiceDetailScanStatus);
+            connect(timeService.get(), &QLowEnergyService::characteristicRead, this,
+                    &BluetoothController::timeCharacteristicRead);
+            timeService->discoverDetails();
+        }
+
+//        messageService->readCharacteristic(characteristic);
+    }
 }
 
 void BluetoothController::disconnectDevice()

@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 //    qmlRegisterType("com.")
     engine.rootContext()->setContextProperty("manager", glasses.getSwipeManager().get());
     engine.rootContext()->setContextProperty("timeManager", glasses.getTimeManager().get());
+    engine.rootContext()->setContextProperty("smsManager", glasses.getSmsManager().get());
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
