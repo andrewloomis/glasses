@@ -15,15 +15,22 @@ public:
     static QString getMessageUuid() { return "0349f744-ce6e-11e8-a8d5-f2801f1b9fd1"; }
 
 private:
-    QString getName() const { return name; }
-    QString getBody() const { return body; }
+    QString getName() const { return mName; }
+    QString getBody() const { return mBody; }
 
-    QString name;
-    QString body;
+    QString mName;
+    QString mBody;
 
 signals:
+    void launchMessagePopup();
 
 public slots:
+    void updateMessage(const QString& name, const QString& body)
+    {
+        mName = name;
+        mBody = body;
+        emit launchMessagePopup();
+    }
 };
 
 #endif // SMSMANAGER_H

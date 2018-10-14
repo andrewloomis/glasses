@@ -6,5 +6,7 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>saturn.jpg</file>
+        <file>MessagePopup.qml</file>
+        <file>MessagePopupForm.ui.qml</file>
     </qresource>
 </RCC>

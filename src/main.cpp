@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 //    qmlRegisterType("com.")
-    engine.rootContext()->setContextProperty("manager", glasses.getSwipeManager().get());
+    engine.rootContext()->setContextProperty("swipeManager", glasses.getSwipeManager().get());
     engine.rootContext()->setContextProperty("timeManager", glasses.getTimeManager().get());
     engine.rootContext()->setContextProperty("smsManager", glasses.getSmsManager().get());
 

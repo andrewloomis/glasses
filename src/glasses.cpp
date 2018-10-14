@@ -12,7 +12,8 @@ void Glasses::signal_callback(int signal)
 }
 
 Glasses::Glasses(QGuiApplication& app)
-    : tm(std::make_shared<TimeManager>()), guiApp(app), wakeUp(31)
+    : tm(std::make_shared<TimeManager>()), sm(std::make_shared<SmsManager>()),
+      guiApp(app), wakeUp(31)
 {
     signal(SIGINT, signal_callback);
     shutdownFlag = std::make_shared<std::atomic<bool>>(false);
@@ -32,6 +33,8 @@ Glasses::Glasses(QGuiApplication& app)
     timerThread = std::thread([this]{ timer(); });
 
     QObject::connect(&bc, &BluetoothController::newTime, tm.get(), &TimeManager::updateTime);
+    QObject::connect(&bc, &BluetoothController::newMessage, sm.get(), &SmsManager::updateMessage);
+    QObject::connect(sm.get(), &SmsManager::launchMessagePopup, gc.getSwipeManager().get(), &SwipeManager::moveToMessage);
 }
 
 Glasses::~Glasses()

@@ -1,9 +1,12 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Layouts 1.3
 
 Page {
+    id: timePage
     width: 800
     height: 480
+
     Image {
         id: image
         width: parent.width

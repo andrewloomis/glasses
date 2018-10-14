@@ -28,10 +28,8 @@
 #define GPENTH 0xA0
 #define GEXTH 0xA1
 
-void test() {}
-
 GestureController::GestureController()
-    : i2c(I2C_BUS), interrupt(INT)
+    : swipeManager(std::make_shared<SwipeManager>()), i2c(I2C_BUS), interrupt(INT)
 {
     i2c.frequency(mraa::I2cMode::I2C_STD);
     if (i2c.address(0x39) != mraa::Result::SUCCESS)
@@ -48,7 +46,7 @@ GestureController::GestureController()
     i2c.writeByte(AICLEAR);
     setupGestureRegisters();
     powerMode(PowerMode::ON);
-    
+    std::cout << "Gesture sensor active\n";
 }
 
 GestureController::~GestureController()
@@ -138,28 +136,31 @@ void GestureController::parseFifoData(const std::array<uint8_t, 128>& data, uint
     // std::cout << "Left: " << leftRightDiff << "\n-------------" << std::endl;
     // for (int i = 0; i < dataCount; i++) std::cout << (int)data[i] << ',';
     // std::cout << std::endl;
+    const int threshold = 13;
     
-    if (upDownDiff < -13)
+    if (upDownDiff < -threshold)
     {
         if (detects.down > 0) {
             gestureBuffer.add(Direction::UP);
+            swipeManager->moveToUp();
             std::cout << "UP****************\n";
             detects.reset();
             sleep(200);
         }
         else detects.up++;
     }
-    else if (upDownDiff > 13)
+    else if (upDownDiff > threshold)
     {
         if (detects.up > 0) {
             gestureBuffer.add(Direction::DOWN);
+            swipeManager->moveToDown();
             std::cout << "DOWN****************\n";
             detects.reset();
             sleep(200);
         }
         else detects.down++;
     }
-    if (leftRightDiff < -13)
+    if (leftRightDiff < -threshold)
     {
         if (detects.right > 0) {
             gestureBuffer.add(Direction::LEFT);
@@ -170,7 +171,7 @@ void GestureController::parseFifoData(const std::array<uint8_t, 128>& data, uint
         }
         else detects.left++;
     }
-    else if (leftRightDiff > 13)
+    else if (leftRightDiff > threshold)
     {
         if (detects.left > 0) {
             gestureBuffer.add(Direction::RIGHT);

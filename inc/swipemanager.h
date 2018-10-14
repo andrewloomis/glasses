@@ -18,12 +18,24 @@ class SwipeManager : public QObject
 signals:
     void toRight();
     void toLeft();
+    void toUp();
+    void toDown();
+    void toMessage();
 public slots:
     void moveToRight(){
         emit toRight();
     }
     void moveToLeft(){
         emit toLeft();
+    }
+    void moveToDown(){
+        emit toDown();
+    }
+    void moveToUp(){
+        emit toUp();
+    }
+    void moveToMessage() {
+        emit toMessage();
     }
 };
 

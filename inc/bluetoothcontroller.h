@@ -36,6 +36,7 @@ private:
 
 signals:
     void newTime(QDate date, QTime time);
+    void newMessage(const QString name, const QString body);
 };
 
 #endif // BLUETOOTHCONTROLLER_H

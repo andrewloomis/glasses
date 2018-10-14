@@ -131,11 +131,27 @@ void BluetoothController::timeServiceDetailScanStatus(QLowEnergyService::Service
 void BluetoothController::messageCharacteristicChanged(const QLowEnergyCharacteristic &characteristic,
                                                        const QByteArray &newValue)
 {
-    qWarning() << "NEW MESSAGE: ";
+    qWarning() << "NEW MESSAGE:";
     if(characteristic.uuid() == QBluetoothUuid(SmsManager::getMessageUuid()))
+//            && newValue[0] == 128)
     {
-        QString text = QString(newValue);
-        qWarning() << text << '\n';
+        QString text = newValue;
+        QString name;
+        QString body;
+        auto strings = text.split(QChar(0x1D));
+        if(strings.length() == 2)
+        {
+            if(strings[0] == "") name = "Unknown";
+            else name = strings[0];
+            body = strings[1];
+            if(body != "") emit newMessage(name, body);
+        }
+        else
+        {
+            qWarning() << "Invalid text message format\n";
+        }
+
+        qWarning() << name << " said: " << body << '\n';
     }
 }
 
