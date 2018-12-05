@@ -20,7 +20,8 @@ SOURCES += \
     src/swipemanager.cpp \
     src/bluetoothcontroller.cpp \
     src/timemanager.cpp \
-    src/smsmanager.cpp
+    src/smsmanager.cpp \
+    src/rgbled.cpp
 
 HEADERS += \
     inc/button.h  \
@@ -29,7 +30,8 @@ HEADERS += \
     inc/swipemanager.h \
     inc/bluetoothcontroller.h \
     inc/timemanager.h \
-    inc/smsmanager.h
+    inc/smsmanager.h \
+    inc/rgbled.h
 
 RESOURCES += qml.qrc
 
@@ -50,7 +52,7 @@ QML_DESIGNER_IMPORT_PATH =
 target.path = /home/linaro/glasses-build
 INSTALLS += target
 
-unix:!macx: LIBS += -L$$PWD/../../../media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu/ -lmraa
+unix:!macx: LIBS += -L/media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu/ -lmraa
 
-INCLUDEPATH += $$PWD/../../../media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
-DEPENDPATH += $$PWD/../../../media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
+INCLUDEPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
+DEPENDPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu

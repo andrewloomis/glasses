@@ -29,10 +29,6 @@ ApplicationWindow {
                 NumberAnimation { target: popup; property: "opacity"; from: 0.0; to: 0.9; duration: 500 }
             }
         }
-        exit: Transition {
-
-
-        }
 
         property string nameText
         property string bodyText

@@ -1,0 +1,3 @@
+[submodule "glassesDevices"]
+	path = glassesDevices
+	url = https://github.com/andrewloomis/glassesDevices.git
