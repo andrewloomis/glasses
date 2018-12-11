@@ -1,6 +1,5 @@
 #include <glasses.h>
 
-#include <mraa/common.hpp>
 #include <iostream>     // cout
 #include <chrono>       // chrono_literals
 #include <signal.h>     // signal()
@@ -12,29 +11,18 @@ void Glasses::signal_callback(int signal)
 }
 
 Glasses::Glasses(QGuiApplication& app)
-    : tm(std::make_shared<TimeManager>()), sm(std::make_shared<SmsManager>()),
-      guiApp(app), wakeUp(31)
+    : gestureManager(std::make_shared<GestureManager>()), timeManager(std::make_shared<TimeManager>()),
+      smsManager(std::make_shared<SmsManager>()), authenticationManager(std::make_shared<AuthenticationManager>()),
+      guiApp(app)
 {
     signal(SIGINT, signal_callback);
     shutdownFlag = std::make_shared<std::atomic<bool>>(false);
 
-    // Configure MRAA library
-    mraa::Result res = mraa::init();
-    if (res != mraa::Result::SUCCESS)
-    {
-        std::cout << "MRAA failed\n";
-        exit(1);
-    }
-    else
-    {
-        std::cout << "Using MRAA " << mraa::getVersion() 
-        << " on " << mraa::getPlatformName() << std::endl;
-    }
     timerThread = std::thread([this]{ timer(); });
 
-    QObject::connect(&bc, &BluetoothController::newTime, tm.get(), &TimeManager::updateTime);
-    QObject::connect(&bc, &BluetoothController::newMessage, sm.get(), &SmsManager::updateMessage);
-    QObject::connect(sm.get(), &SmsManager::launchMessagePopup, gc.getSwipeManager().get(), &SwipeManager::moveToMessage);
+    QObject::connect(&bluetoothController, &BluetoothController::newTime, timeManager.get(), &TimeManager::updateTime);
+    QObject::connect(&bluetoothController, &BluetoothController::newMessage, smsManager.get(), &SmsManager::updateMessage);
+//    QObject::connect(smsManager.get(), &SmsManager::launchMessagePopup, gestureManager.get(), &SwipeManager::moveToMessage);
 }
 
 Glasses::~Glasses()

@@ -14,9 +14,10 @@ int main(int argc, char *argv[])
     Glasses glasses(app);
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("swipeManager", glasses.getSwipeManager().get());
+    engine.rootContext()->setContextProperty("gestureManager", glasses.getGestureManager().get());
     engine.rootContext()->setContextProperty("timeManager", glasses.getTimeManager().get());
     engine.rootContext()->setContextProperty("smsManager", glasses.getSmsManager().get());
+    engine.rootContext()->setContextProperty("authenticationManager", glasses.getAuthenticationManager().get());
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())

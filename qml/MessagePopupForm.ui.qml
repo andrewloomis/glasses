@@ -3,7 +3,7 @@ import QtQuick.Controls 2.4
 
 Popup {
     id: popup
-    activeFocus: true
+    //    activeFocus: true
     focus: true
     modal: true
 

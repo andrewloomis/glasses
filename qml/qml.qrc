@@ -8,5 +8,9 @@
         <file>saturn.jpg</file>
         <file>MessagePopup.qml</file>
         <file>MessagePopupForm.ui.qml</file>
+        <file>KeyboardInput.qml</file>
+        <file>LockScreen.qml</file>
+        <file>fingerprint_highlighted.png</file>
+        <file>fingerprint.png</file>
     </qresource>
 </RCC>

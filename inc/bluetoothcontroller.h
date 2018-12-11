@@ -18,6 +18,7 @@ private:
     QBluetoothDeviceInfo deviceInfo;
     std::vector<QBluetoothUuid> serviceUuids;
 
+    void startConnection();
     void foundDevice(const QBluetoothDeviceInfo &device);
     void serviceDiscovered(const QBluetoothUuid &serviceUuid);
     void serviceScanDone();

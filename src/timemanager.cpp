@@ -9,9 +9,10 @@ TimeManager::TimeManager(QObject *parent)
 
 QString TimeManager::getDateString() const
 {
-    return daysOfWeek[(std::size_t)mTime.date().dayOfWeek() - 1]
-            + ", " + months[(std::size_t)mTime.date().month() - 1]
-            + ' ' + QString::number(mTime.date().day());
+    auto day = daysOfWeek[static_cast<std::size_t>(mTime.date().dayOfWeek() - 1)];
+    auto month = months[static_cast<std::size_t>(mTime.date().month() - 1)];
+    auto number = QString::number(mTime.date().day());
+    return day + ", " + month + ' ' + number;
 }
 
 QString TimeManager::getTimeString() const

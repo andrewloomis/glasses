@@ -1,12 +1,11 @@
 #ifndef GLASSES_H
 #define GLASSES_H
 
-#include <gesturecontroller.h>
-#include <button.h>
-#include <swipemanager.h>
+#include <gesturemanager.h>
 #include <bluetoothcontroller.h>
 #include <timemanager.h>
 #include <smsmanager.h>
+#include <authenticationmanager.h>
 
 #include <atomic>
 #include <memory>
@@ -19,17 +18,21 @@ class Glasses
 public:
     Glasses(QGuiApplication& app);
     ~Glasses();
-    std::shared_ptr<SwipeManager> getSwipeManager() { return gc.getSwipeManager(); }
-    std::shared_ptr<TimeManager> getTimeManager() { return tm; }
-    std::shared_ptr<SmsManager> getSmsManager() { return sm; }
+    std::shared_ptr<GestureManager> getGestureManager() { return gestureManager; }
+    std::shared_ptr<TimeManager> getTimeManager() { return timeManager; }
+    std::shared_ptr<SmsManager> getSmsManager() { return smsManager; }
+    std::shared_ptr<AuthenticationManager> getAuthenticationManager()
+        { return authenticationManager; }
 //    void testGestures();
+
 private:
-    GestureController gc;
-    BluetoothController bc;
-    std::shared_ptr<TimeManager> tm;
-    std::shared_ptr<SmsManager> sm;
+    std::shared_ptr<GestureManager> gestureManager;
+    BluetoothController bluetoothController;
+    std::shared_ptr<TimeManager> timeManager;
+    std::shared_ptr<SmsManager> smsManager;
+    std::shared_ptr<AuthenticationManager> authenticationManager;
+
     QGuiApplication& guiApp;
-    Button wakeUp;
     std::thread timerThread;
     
     static inline std::shared_ptr<std::atomic<bool>> shutdownFlag;

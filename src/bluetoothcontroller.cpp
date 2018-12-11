@@ -13,6 +13,10 @@ BluetoothController::BluetoothController()
             &BluetoothController::scanFinished);
     connect(deviceDiscoveryAgent.get(), &QBluetoothDeviceDiscoveryAgent::canceled, this,
             &BluetoothController::scanFinished);
+}
+
+void BluetoothController::startConnection()
+{
     deviceDiscoveryAgent->start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
 }
 

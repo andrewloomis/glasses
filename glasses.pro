@@ -1,5 +1,6 @@
 QT += quick bluetooth
 CONFIG += c++17
+PROJ_DIR = /home/andrew/glasses
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -14,45 +15,56 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     src/main.cpp    \
-    src/button.cpp  \
-    src/gesturecontroller.cpp  \
     src/glasses.cpp  \
-    src/swipemanager.cpp \
     src/bluetoothcontroller.cpp \
     src/timemanager.cpp \
     src/smsmanager.cpp \
-    src/rgbled.cpp
+    src/authenticationmanager.cpp \
+    src/gesturemanager.cpp
 
 HEADERS += \
-    inc/button.h  \
-    inc/gesturecontroller.h  \
     inc/glasses.h \
-    inc/swipemanager.h \
     inc/bluetoothcontroller.h \
     inc/timemanager.h \
     inc/smsmanager.h \
-    inc/rgbled.h
+    inc/authenticationmanager.h \
+    inc/gesturemanager.h \
+    inc/config.h
 
-RESOURCES += qml.qrc
+RESOURCES += qml/qml.qrc
 
 INCLUDEPATH += inc/
 
-#QMAKE_CXXFLAGS_DEBUG *= -O0 -fno-inline-functions
+CONFIG(PLATFORM_DESKTOP)
+{
+    DEFINES += PLATFORM_DESKTOP
 
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+}
+#CONFIG(PLATFORM_ARM)
+#{
+#    DEFINES += PLATFORM_ARM
 
-# Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
+#    INCLUDEPATH += $${PROJ_DIR}/glassesDevices/spdlog/include
 
-# Default rules for deployment.
-#qnx: target.path = /tmp/$${TARGET}/bin
-#else: unix:!android: target.path = /opt/$${TARGET}/bin
-#!isEmpty(target.path): INSTALLS += target
-target.path = /home/linaro/glasses-build
-INSTALLS += target
+#    #QMAKE_CXXFLAGS_DEBUG *= -O0 -fno-inline-functions
 
-unix:!macx: LIBS += -L/media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu/ -lmraa
+#    # Additional import path used to resolve QML modules in Qt Creator's code model
+#    QML_IMPORT_PATH =
 
-INCLUDEPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
-DEPENDPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
+#    # Additional import path used to resolve QML modules just for Qt Quick Designer
+#    QML_DESIGNER_IMPORT_PATH =
+
+#    # Default rules for deployment.
+#    #qnx: target.path = /tmp/$${TARGET}/bin
+#    #else: unix:!android: target.path = /opt/$${TARGET}/bin
+#    #!isEmpty(target.path): INSTALLS += target
+#    target.path = /home/linaro/glasses-build
+#    INSTALLS += target
+
+#    LIBS += -L/media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu/ -lmraa \
+#        -L$${PROJ_DIR}/glassesDevices/lib -Wl,-rpath=$${PROJ_DIR}/glassesDevices/lib -lglassesDevices
+
+#    INCLUDEPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
+#    DEPENDPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
+#}
+

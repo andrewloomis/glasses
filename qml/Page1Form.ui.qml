@@ -18,7 +18,7 @@ Page {
         id: timeLabel
         width: 486
         height: 242
-        text: "NaN"
+        text: "12:00"
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -39,7 +39,7 @@ Page {
         width: 328
         height: 90
         color: "#ffffff"
-        text: "NaN"
+        text: "Thu, Aug 20"
         anchors.horizontalCenterOffset: 0
         anchors.top: parent.top
         anchors.topMargin: 20
