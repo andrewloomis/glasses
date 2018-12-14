@@ -23,7 +23,6 @@ public:
     std::shared_ptr<SmsManager> getSmsManager() { return smsManager; }
     std::shared_ptr<AuthenticationManager> getAuthenticationManager()
         { return authenticationManager; }
-//    void testGestures();
 
 private:
     std::shared_ptr<GestureManager> gestureManager;

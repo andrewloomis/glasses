@@ -35,36 +35,34 @@ RESOURCES += qml/qml.qrc
 
 INCLUDEPATH += inc/
 
-CONFIG(PLATFORM_DESKTOP)
-{
+CONFIG(PLATFORM_DESKTOP) {
     DEFINES += PLATFORM_DESKTOP
 
 }
-#CONFIG(PLATFORM_ARM)
-#{
-#    DEFINES += PLATFORM_ARM
+CONFIG(PLATFORM_ARM) {
+    DEFINES += PLATFORM_ARM
 
-#    INCLUDEPATH += $${PROJ_DIR}/glassesDevices/spdlog/include
+    INCLUDEPATH += $${PROJ_DIR}/glassesDevices/spdlog/include
 
-#    #QMAKE_CXXFLAGS_DEBUG *= -O0 -fno-inline-functions
+    #QMAKE_CXXFLAGS_DEBUG *= -O0 -fno-inline-functions
 
-#    # Additional import path used to resolve QML modules in Qt Creator's code model
-#    QML_IMPORT_PATH =
+    # Additional import path used to resolve QML modules in Qt Creator's code model
+    QML_IMPORT_PATH =
 
-#    # Additional import path used to resolve QML modules just for Qt Quick Designer
-#    QML_DESIGNER_IMPORT_PATH =
+    # Additional import path used to resolve QML modules just for Qt Quick Designer
+    QML_DESIGNER_IMPORT_PATH =
 
-#    # Default rules for deployment.
-#    #qnx: target.path = /tmp/$${TARGET}/bin
-#    #else: unix:!android: target.path = /opt/$${TARGET}/bin
-#    #!isEmpty(target.path): INSTALLS += target
-#    target.path = /home/linaro/glasses-build
-#    INSTALLS += target
+    # Default rules for deployment.
+    #qnx: target.path = /tmp/$${TARGET}/bin
+    #else: unix:!android: target.path = /opt/$${TARGET}/bin
+    #!isEmpty(target.path): INSTALLS += target
+    target.path = /home/linaro/glasses-build
+    INSTALLS += target
 
-#    LIBS += -L/media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu/ -lmraa \
-#        -L$${PROJ_DIR}/glassesDevices/lib -Wl,-rpath=$${PROJ_DIR}/glassesDevices/lib -lglassesDevices
+    LIBS += -L/media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu/ -lmraa \
+        -L$${PROJ_DIR}/glassesDevices/lib -Wl,-rpath=$${PROJ_DIR}/glassesDevices/lib -lglassesDevices
 
-#    INCLUDEPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
-#    DEPENDPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
-#}
+    INCLUDEPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
+    DEPENDPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
+}
 

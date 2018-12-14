@@ -49,10 +49,23 @@ Item {
 
     Connections {
         target: authenticationManager
-        onUnlock: {
+        onUnlock: if(activeFocus) {
             fingerprintImage.source = "fingerprint_highlighted.png"
             unlockTimer.start()
+            fadeOut.start()
+            tabBarFadeIn.start()
+            swipeView.focus = true
         }
+    }
+
+    NumberAnimation {
+        id: fadeOut
+        target: lockScreen
+        property: "opacity"
+        duration: 2000
+        easing.type: Easing.InOutQuad
+        from: 1
+        to: 0
     }
 
     // Emulated Unlock (only for testing)
@@ -62,8 +75,6 @@ Item {
         repeat: false
         onTriggered: {
             lockScreen.focus = false
-            swipeView.visible = true
-            tabBar.visible = true
         }
     }
 }

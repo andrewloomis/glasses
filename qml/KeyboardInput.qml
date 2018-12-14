@@ -1,7 +1,7 @@
 import QtQuick 2.0
 
-FocusScope {
-    focus: true
+Item {
+//    focus: true
     Keys.onPressed: {
         switch(event.key)
         {

@@ -20,6 +20,9 @@ private:
 #ifdef PLATFORM_ARM
     GestureSensor gestureSensor;
     TouchSlider touchSlider;
+    void setupCallbacks();
+#else
+    void setupCallbacks() {}
 #endif
 
 signals:

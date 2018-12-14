@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>Page1Form.ui.qml</file>
-        <file>Page2Form.ui.qml</file>
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>saturn.jpg</file>
@@ -12,5 +10,10 @@
         <file>LockScreen.qml</file>
         <file>fingerprint_highlighted.png</file>
         <file>fingerprint.png</file>
+        <file>HomePage.qml</file>
+        <file>MessagesPage.qml</file>
+        <file>CameraPage.qml</file>
+        <file>LibraryPage.qml</file>
+        <file>QuickMenu.qml</file>
     </qresource>
 </RCC>
