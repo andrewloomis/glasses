@@ -1,19 +1,26 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>saturn.jpg</file>
         <file>MessagePopup.qml</file>
         <file>MessagePopupForm.ui.qml</file>
-        <file>KeyboardInput.qml</file>
-        <file>LockScreen.qml</file>
-        <file>fingerprint_highlighted.png</file>
-        <file>fingerprint.png</file>
-        <file>HomePage.qml</file>
-        <file>MessagesPage.qml</file>
-        <file>CameraPage.qml</file>
-        <file>LibraryPage.qml</file>
-        <file>QuickMenu.qml</file>
+    </qresource>
+    <qresource prefix="/LockScreen">
+        <file alias="LockScreen.qml">LockScreen/LockScreen.qml</file>
+        <file alias="fingerprint.png">LockScreen/fingerprint.png</file>
+        <file>LockScreen/fingerprint_highlighted.png</file>
+    </qresource>
+    <qresource prefix="/MainPages">
+        <file alias="LibraryPage.qml">MainPages/LibraryPage.qml</file>
+        <file alias="CameraPage.qml">MainPages/CameraPage.qml</file>
+        <file alias="MessagesPage.qml">MainPages/MessagesPage.qml</file>
+        <file alias="HomePage.qml">MainPages/HomePage.qml</file>
+        <file alias="saturn.jpg">MainPages/saturn.jpg</file>
+    </qresource>
+    <qresource prefix="/QuickMenu">
+        <file alias="QuickMenu.qml">QuickMenu/QuickMenu.qml</file>
+    </qresource>
+    <qresource prefix="/misc">
+        <file alias="KeyboardInput.qml">misc/KeyboardInput.qml</file>
     </qresource>
 </RCC>
