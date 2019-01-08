@@ -6,6 +6,7 @@
 #include <timemanager.h>
 #include <smsmanager.h>
 #include <authenticationmanager.h>
+#include <ledmanager.h>
 
 #include <atomic>
 #include <memory>
@@ -30,7 +31,9 @@ private:
     std::shared_ptr<TimeManager> timeManager;
     std::shared_ptr<SmsManager> smsManager;
     std::shared_ptr<AuthenticationManager> authenticationManager;
-
+#ifdef PLATFORM_ARM
+    LEDManager ledManager;
+#endif
     QGuiApplication& guiApp;
     std::thread timerThread;
     

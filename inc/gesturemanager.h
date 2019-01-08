@@ -1,7 +1,6 @@
 #ifndef GESTUREMANAGER_H
 #define GESTUREMANAGER_H
 
-#include <usertypes.h>
 #ifdef PLATFORM_ARM
     #include <glassesDevices/gesturesensor.h>
     #include <glassesDevices/touchslider.h>

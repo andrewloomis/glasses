@@ -1,6 +1,7 @@
 QT += quick bluetooth
 CONFIG += c++17
-PROJ_DIR = /home/andrew/glasses
+PROJ_DIR = $${PWD}
+SYSROOT = ${HOME}/dev/dragonboard/sysroot
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -20,7 +21,8 @@ SOURCES += \
     src/timemanager.cpp \
     src/smsmanager.cpp \
     src/authenticationmanager.cpp \
-    src/gesturemanager.cpp
+    src/gesturemanager.cpp \
+    src/ledmanager.cpp
 
 HEADERS += \
     inc/glasses.h \
@@ -29,7 +31,8 @@ HEADERS += \
     inc/smsmanager.h \
     inc/authenticationmanager.h \
     inc/gesturemanager.h \
-    inc/config.h
+    inc/config.h \
+    inc/ledmanager.h
 
 RESOURCES += qml/qml.qrc
 
@@ -42,15 +45,13 @@ CONFIG(PLATFORM_DESKTOP) {
 CONFIG(PLATFORM_ARM) {
     DEFINES += PLATFORM_ARM
 
-    INCLUDEPATH += $${PROJ_DIR}/glassesDevices/spdlog/include
+    INCLUDEPATH += $${PROJ_DIR}/glassesDevices/spdlog/include $${PROJ_DIR}/glassesDevices/
 
     target.path = /home/linaro/glasses-build
     INSTALLS += target
 
-    LIBS += -L/media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu/ -lmraa \
-        -L$${PROJ_DIR}/glassesDevices/lib -Wl,-rpath=$${PROJ_DIR}/glassesDevices/lib -lglassesDevices
+    LIBS += -L$${SYSROOT}/usr/lib/aarch64-linux-gnu -lglassesDevices
 
-    INCLUDEPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
-    DEPENDPATH += /media/hdd/linaro/sysroot/usr/lib/aarch64-linux-gnu
+    DEPENDPATH += $${SYSROOT}/usr/lib/aarch64-linux-gnu
 }
 
